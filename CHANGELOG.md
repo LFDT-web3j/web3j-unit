@@ -7,7 +7,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 ### Bug Fixes
 
-*
+* Fix local build [#83](https://github.com/hyperledger/web3j-unit/pull/83)
 
 ### Features
 
