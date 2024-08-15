@@ -24,8 +24,8 @@ You can find an example using docker-compose [here](https://github.com/web3j/web
       maven { url "https://dl.cloudsmith.io/public/consensys/quorum-mainnet-launcher/maven/" }
    }
 
-   implementation "org.web3j:core:4.12.0"
-   testCompile "org.web3j:web3j-unit:4.12.0"
+   implementation "org.web3j:core:4.12.1"
+   testCompile "org.web3j:web3j-unit:4.12.1"
 ```
 
 2. Create a new test with the `@EVMTest` annotation. An embedded EVM is used by default. To use Geth or Besu pass the node type into the annotation: `@EVMTest(NodeType.GETH)` or `@EVMTest(NodeType.BESU)`
@@ -85,8 +85,8 @@ class GreeterTest {
      jcenter()
   }
 
-  implementation "org.web3j:core:4.12.0"
-  testCompile "org.web3j:web3j-unit:4.12.0"
+  implementation "org.web3j:core:4.12.1"
+  testCompile "org.web3j:web3j-unit:4.12.1"
 ```
 
 2. Create a new test with the `@EVMComposeTest` annotation.
