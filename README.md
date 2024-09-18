@@ -17,15 +17,14 @@ You can find an example using docker-compose [here](https://github.com/web3j/web
 ```groovy
    repositories {
       mavenCentral()
-      jcenter()
       maven { url "https://hyperledger.jfrog.io/artifactory/besu-maven/" }
       maven { url "https://artifacts.consensys.net/public/maven/maven/" }
       maven { url "https://splunk.jfrog.io/splunk/ext-releases-local" }
       maven { url "https://dl.cloudsmith.io/public/consensys/quorum-mainnet-launcher/maven/" }
    }
 
-   implementation "org.web3j:core:4.12.1"
-   testCompile "org.web3j:web3j-unit:4.12.1"
+   implementation "org.web3j:core:4.12.2"
+   testCompile "org.web3j:web3j-unit:4.12.2"
 ```
 
 2. Create a new test with the `@EVMTest` annotation. An embedded EVM is used by default. To use Geth or Besu pass the node type into the annotation: `@EVMTest(NodeType.GETH)` or `@EVMTest(NodeType.BESU)`
@@ -82,11 +81,10 @@ class GreeterTest {
 ```groovy
   repositories {
      mavenCentral()
-     jcenter()
   }
 
-  implementation "org.web3j:core:4.12.1"
-  testCompile "org.web3j:web3j-unit:4.12.1"
+  implementation "org.web3j:core:4.12.2"
+  testCompile "org.web3j:web3j-unit:4.12.2"
 ```
 
 2. Create a new test with the `@EVMComposeTest` annotation.
