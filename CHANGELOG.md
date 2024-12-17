@@ -15,7 +15,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 ### BREAKING CHANGES
 
-*
+* Update organization name [#87](https://github.com/hyperledger-web3j/web3j-unit/pull/87)
 
 # [4.12.2](https://github.com/hyperledger/web3j-unit/releases/tag/v4.12.2) (2024-09-18)
 
