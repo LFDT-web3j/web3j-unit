@@ -17,7 +17,7 @@ jobs:
       - name: Build Workflow Dispatch
         uses: convictional/trigger-workflow-and-wait@v1.3.0
         with:
-          owner: hyperledger-web3j
+          owner: LFDT-web3j
           repo: web3j-unit
           github_token: ${{ secrets.GITHUB_TOKEN }}
           workflow_file_name: build.yml
@@ -25,10 +25,10 @@ jobs:
           propagate_failure: true
           trigger_workflow: true
           wait_workflow: true
-      - name: Set up JDK 17
+      - name: Set up JDK 21
         uses: actions/setup-java@v1
         with:
-          java-version: 17
+          java-version: 21
       - name: Cache Gradle packages
         uses: actions/cache@v4
         with:

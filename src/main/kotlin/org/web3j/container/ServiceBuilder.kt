@@ -19,7 +19,7 @@ import org.web3j.container.embedded.EmbeddedService
 import org.web3j.container.geth.GethContainer
 import org.web3j.evm.Configuration
 import org.web3j.evm.PassthroughTracer
-import java.net.URL
+import java.net.URI
 
 class ServiceBuilder {
 
@@ -71,7 +71,7 @@ class ServiceBuilder {
                 if (genesisPath == "dev") {
                     EmbeddedService(Configuration(Address(selfAddress), 10), PassthroughTracer())
                 } else {
-                    EmbeddedService(Configuration(Address(selfAddress), 10, URL(genesisPath)), PassthroughTracer())
+                    EmbeddedService(Configuration(Address(selfAddress), 10, URI(genesisPath).toURL()), PassthroughTracer())
                 }
             }
             NodeType.COMPOSE -> KDockerComposeContainer(dockerCompose, serviceName, servicePort)
