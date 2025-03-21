@@ -7,7 +7,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 ### Bug Fixes
 
-*
+* Upgrade kotlin to 2.1.0 for fixing pipeline run [#93](https://github.com/LFDT-web3j/web3j-unit/pull/93)
 
 ### Features
 
