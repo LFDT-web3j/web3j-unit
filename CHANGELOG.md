@@ -3,7 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
-# [5.0.1]() (Upcoming)
+# [5.0.2]() (Upcoming)
+
+### Bug Fixes
+
+* 
+
+### Features
+
+* 
+
+### BREAKING CHANGES
+
+*
+
+
+# [5.0.1](https://github.com/hyperledger-web3j/web3j-unit/releases/tag/v5.0.1) (2026-01-16)
 
 ### Bug Fixes
 
