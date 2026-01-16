@@ -3,11 +3,11 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
-# [4.14.1]() (Upcoming)
+# [5.0.1]() (Upcoming)
 
 ### Bug Fixes
 
-* 
+* maven release repo update [#96](https://github.com/LFDT-web3j/web3j-unit/pull/96)
 
 ### Features
 
