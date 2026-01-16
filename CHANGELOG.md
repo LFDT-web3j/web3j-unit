@@ -17,7 +17,6 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 * 
 
-
 # [4.14.0](https://github.com/LFDT-web3j/web3j-unit/releases/tag/v4.14.0) (2025-04-10)
 
 ### Bug Fixes
