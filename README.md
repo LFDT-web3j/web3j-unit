@@ -83,8 +83,8 @@ class GreeterTest {
      mavenCentral()
   }
 
-  implementation "org.web3j:core:4.14.0"
-  testCompile "org.web3j:web3j-unit:4.14.0"
+  implementation "org.web3j:core:5.0.1"
+  testCompile "org.web3j:web3j-unit:5.0.1"
 ```
 
 2. Create a new test with the `@EVMComposeTest` annotation.
