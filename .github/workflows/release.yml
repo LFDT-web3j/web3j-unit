@@ -57,7 +57,6 @@ jobs:
       # Deploy to Central Portal via JReleaser (Publisher API)
       - name: Deploy to Maven Central (Portal)
         run: ./gradlew -Pversion=${{ steps.release_name.outputs.version }} jreleaserDeploy --stacktrace
-
   javadocs-release:
     needs: release
     runs-on: ubuntu-latest
@@ -70,5 +69,17 @@ jobs:
           java-version: 21
       - name: Publish Javadocs (gh-pages)
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.JRELEASER_GITHUB_TOKEN }}
         run: ./gradlew core:gitPublishPush
+  git-release:
+    needs: release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Github Release
+        uses: marvinpinto/action-automatic-releases@latest
+        with:
+          repo_token: ${{ secrets.JRELEASER_GITHUB_TOKEN }}
+          automatic_release_tag: 'v${{ needs.release.outputs.stripped_version }}'
+          prerelease: false
+          files: |
+            "web3j-unit-"+${{ steps.release_name.outputs.result }}.*
