@@ -36,5 +36,5 @@ class BesuContainer(
     override fun withWaitStrategy(): WaitStrategy =
         Wait
             .forHttp("/liveness")
-            .forStatusCode(200).forPort(8545).withStartupTimeout(java.time.Duration.ofMinutes(2))
+            .forStatusCode(200).forPort(8545).withStartupTimeout(java.time.Duration.ofMinutes(4))
 }
