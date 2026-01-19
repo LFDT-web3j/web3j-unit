@@ -25,7 +25,7 @@ class BesuContainer(
 ) :
     KGenericContainer(
         "hyperledger/besu",
-        version,
+        "25.5.0",
         resourceFiles,
         hostFiles,
         "besu/besu_start.sh",

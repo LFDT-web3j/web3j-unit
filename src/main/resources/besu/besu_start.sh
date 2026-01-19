@@ -1,2 +1,2 @@
 #!/bin/bash
-/opt/besu/bin/besu --rpc-http-enabled --miner-enabled --miner-coinbase=0x0000000000000000000000000000000000000000 --data-path=/besu-data --genesis-file=/genesis.json --rpc-http-api=ETH,NET,WEB3,TRACE,DEBUG --host-allowlist="*" --rpc-http-cors-origins="all" --rpc-http-host=0.0.0.0 --rpc-http-port=8545
+/opt/besu/bin/besu --rpc-http-enabled --miner-enabled --miner-coinbase=0x0000000000000000000000000000000000000000 --genesis-file=/genesis.json --rpc-http-api=ETH,NET,WEB3,TRACE,DEBUG --host-allowlist="*" --rpc-http-cors-origins="all" --rpc-http-host=0.0.0.0 --rpc-http-port=8545
