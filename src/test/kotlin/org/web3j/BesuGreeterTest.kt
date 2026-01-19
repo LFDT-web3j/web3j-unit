@@ -13,14 +13,13 @@
 package org.web3j
 
 import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import org.web3j.greeter.Greeter
 import org.web3j.protocol.Web3j
 import org.web3j.tx.TransactionManager
 import org.web3j.tx.gas.ContractGasProvider
+
 @EVMTest(NodeType.BESU)
-@Disabled
 class BesuGreeterTest {
 
     @Test
