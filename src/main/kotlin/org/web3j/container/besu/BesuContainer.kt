@@ -34,7 +34,10 @@ class BesuContainer(
     ) {
 
     override fun withWaitStrategy(): WaitStrategy =
+//        Wait
+//            .forHttp("/liveness")
+//            .forStatusCode(200).forPort(8545)
         Wait
-            .forHttp("/liveness")
-            .forStatusCode(200).forPort(8545)
+            .forLogMessage(".*JsonRpcHttpService.*started.*|.*RPC endpoint.*listening.*|.*Starting.*JSON-RPC.*service.*", 1)
+            .withStartupTimeout(java.time.Duration.ofMinutes(4))
 }
