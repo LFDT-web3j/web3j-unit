@@ -7,7 +7,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 ### Bug Fixes
 
-* 
+* Fix Besu test container [#98](https://github.com/LFDT-web3j/web3j-unit/pull/98)
 
 ### Features
 
