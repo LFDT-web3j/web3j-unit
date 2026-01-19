@@ -39,5 +39,4 @@ class BesuContainer(
 //            .forStatusCode(200).forPort(8545)
         Wait
             .forLogMessage(".*JsonRpcHttpService.*started.*|.*RPC endpoint.*listening.*|.*Starting.*JSON-RPC.*service.*", 1)
-            .withStartupTimeout(java.time.Duration.ofMinutes(5))
 }
