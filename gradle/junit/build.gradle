@@ -1,11 +1,12 @@
 ext {
-    junitVersion = '5.9.3'
+    junitVersion = '6.0.2'
 }
 
 dependencies {
-    testImplementation "org.junit.jupiter:junit-jupiter-engine:$junitVersion",
-            "org.junit.jupiter:junit-jupiter-api:$junitVersion",
-            "org.junit.jupiter:junit-jupiter-params:$junitVersion"
+    testImplementation "org.junit.jupiter:junit-jupiter-params:$junitVersion"
+    testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:$junitVersion"
+    testRuntimeOnly "org.junit.platform:junit-platform-launcher"
+    api "org.junit.jupiter:junit-jupiter-api:$junitVersion"
 }
 
 test {
