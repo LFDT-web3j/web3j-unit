@@ -126,14 +126,14 @@ open class EVMExtension : ExecutionCondition, BeforeAllCallback, AfterAllCallbac
         return Optional.empty()
     }
 
-    override fun testSuccessful(context: ExtensionContext?) {
+    override fun testSuccessful(context: ExtensionContext) {
         val service = this.service
         if (service is EmbeddedService && service.operationTracer is PassthroughTracer) {
             service.operationTracer.resetContext()
         }
     }
 
-    override fun testFailed(context: ExtensionContext?, cause: Throwable?) {
+    override fun testFailed(context: ExtensionContext, cause: Throwable?) {
         val service = this.service
         if (service is EmbeddedService && service.operationTracer is PassthroughTracer) {
             val tracerContext = service.operationTracer.lastContext()
@@ -151,14 +151,14 @@ open class EVMExtension : ExecutionCondition, BeforeAllCallback, AfterAllCallbac
         }
     }
 
-    override fun testDisabled(context: ExtensionContext?, reason: Optional<String>?) {
+    override fun testDisabled(context: ExtensionContext, reason: Optional<String>) {
         val service = this.service
         if (service is EmbeddedService && service.operationTracer is PassthroughTracer) {
             service.operationTracer.resetContext()
         }
     }
 
-    override fun testAborted(context: ExtensionContext?, cause: Throwable?) {
+    override fun testAborted(context: ExtensionContext, cause: Throwable?) {
         val service = this.service
         if (service is EmbeddedService && service.operationTracer is PassthroughTracer) {
             service.operationTracer.resetContext()
