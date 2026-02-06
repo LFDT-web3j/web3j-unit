@@ -15,7 +15,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 ### BREAKING CHANGES
 
-*
+* Gradle 9 [#99](https://github.com/LFDT-web3j/web3j-unit/pull/99)
 
 
 # [5.0.1](https://github.com/hyperledger-web3j/web3j-unit/releases/tag/v5.0.1) (2026-01-16)
