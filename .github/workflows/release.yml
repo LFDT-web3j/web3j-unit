@@ -6,6 +6,8 @@ on:
 jobs:
   release:
     runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.release_name.outputs.version }}
     env:
       JRELEASER_MAVENCENTRAL_CENTRAL_USERNAME: ${{ secrets.JRELEASER_MAVENCENTRAL_CENTRAL_USERNAME }}
       JRELEASER_GPG_PASSPHRASE: ${{ secrets.JRELEASER_GPG_PASSPHRASE }}
@@ -41,9 +43,13 @@ jobs:
         run: chmod +x gradlew
       - name: Extract release version from branch
         id: release_name
+        shell: bash
         run: |
-          BRANCH="${GITHUB_REF##*/}"
-          echo "version=$BRANCH" >> "$GITHUB_OUTPUT"
+          ref="${GITHUB_REF_NAME#release/}"
+          version="${ref#v}"
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+          echo "Release version: $version"
+
       - name: Fail if version is a SNAPSHOT
         if: endsWith(steps.release_name.outputs.version, '-SNAPSHOT')
         run: |
@@ -70,5 +76,18 @@ jobs:
           java-version: 21
       - name: Publish Javadocs (gh-pages)
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.JRELEASER_GITHUB_TOKEN }}
         run: ./gradlew core:gitPublishPush
+  git-release:
+    needs: release
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Github Release
+        uses: marvinpinto/action-automatic-releases@latest
+        with:
+          repo_token: ${{ secrets.JRELEASER_GITHUB_TOKEN }}
+          automatic_release_tag: v${{ needs.release.outputs.version }}
+          prerelease: false
+          files: |
+            web3j-unit-${{ needs.release.outputs.version }}.*
