@@ -8,6 +8,7 @@ jobs:
     uses: ./.github/workflows/build.yml
 
   release:
+    needs: build
     runs-on: ubuntu-latest
     outputs:
       version: ${{ steps.release_name.outputs.version }}
