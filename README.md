@@ -8,7 +8,7 @@ Instances of `Web3j`, `TransactionManager` and `GasProvider` are injected into t
 
 You can find a sample [here](https://github.com/web3j/web3j-unitexample).
 
-You can find an example using docker-compose [here](https://github.com/web3j/web3j-unit-docker-compose-example). This spins up VMWare Concord nodes using a docker-compose file. 
+You can find an example using docker-compose [here](https://github.com/web3j/web3j-unit-docker-compose-example). This spins up VMWare Concord nodes using a docker-compose file.
 
 ### Getting Started
 
@@ -23,8 +23,8 @@ You can find an example using docker-compose [here](https://github.com/web3j/web
       maven { url "https://dl.cloudsmith.io/public/consensys/quorum-mainnet-launcher/maven/" }
    }
 
-   implementation "org.web3j:core:5.0.2"
-   testCompile "org.web3j:web3j-unit:5.0.2"
+   implementation "org.web3j:core:5.0.3"
+   testCompile "org.web3j:web3j-unit:5.0.3"
 ```
 
 2. Create a new test with the `@EVMTest` annotation. An embedded EVM is used by default. To use Geth or Besu pass the node type into the annotation: `@EVMTest(NodeType.GETH)` or `@EVMTest(NodeType.BESU)`
@@ -77,7 +77,7 @@ class GreeterTest {
 ### Using a custom docker-compose file
 
 1. Add dependency to gradle.
-   
+
 ```groovy
   repositories {
      mavenCentral()
@@ -88,9 +88,9 @@ class GreeterTest {
 ```
 
 2. Create a new test with the `@EVMComposeTest` annotation.
-By default, uses `test.yml` file in the project home, and runs `web3j` on service name `node1` exposing the port `8545`. 
-Can be customised to use specific docker-compose file, service name and port by `@EVMComposeTest("src/test/resources/geth.yml", "ethnode1", 8080)`
-Here, we connect to the service named `ethnode1` in the `src/test/resources/geth.yml` docker-compose file which exposes the port `8080` for `web3j` to connect to. 
+   By default, uses `test.yml` file in the project home, and runs `web3j` on service name `node1` exposing the port `8545`.
+   Can be customised to use specific docker-compose file, service name and port by `@EVMComposeTest("src/test/resources/geth.yml", "ethnode1", 8080)`
+   Here, we connect to the service named `ethnode1` in the `src/test/resources/geth.yml` docker-compose file which exposes the port `8080` for `web3j` to connect to.
 
 ```kotlin
 @EVMComposeTest("src/test/resources/geth.yml", "ethnode1", 8080)
