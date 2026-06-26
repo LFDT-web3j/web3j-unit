@@ -3,7 +3,7 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
-# [5.0.4]() (Upcoming)
+# [6.0.0]() (Upcoming)
 
 ### Bug Fixes
 
@@ -11,7 +11,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 ### Features
 
--  
+- Bump snapshot version to 6.0.0 [#103](https://github.com/LFDT-web3j/web3j-unit/pull/103)
 
 ### BREAKING CHANGES
 
