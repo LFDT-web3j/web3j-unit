@@ -20,7 +20,7 @@ ext {
     kotlinLoggingVersion = '3.0.5'
     logbackVersion = '1.5.6'
     mockitoKotlinVersion = '1.9.24'
-    testContainersVersion = '1.19.8'
+    testContainersVersion = '1.21.4'
     besuVersion = '26.2.0'
     besuNativeVersion = '1.4.2'
     junitVersion = '6.0.2'

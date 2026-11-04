@@ -40,6 +40,12 @@ jobs:
           restore-keys: ${{ runner.os }}-gradle
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
+      - name: Check Docker environment
+        run: |
+          docker version
+          docker info
+          echo "Docker socket:"
+          ls -l /var/run/docker.sock
       - name: Check formatting and run unit tests
         run: |
           BUILD_FLAGS=()
