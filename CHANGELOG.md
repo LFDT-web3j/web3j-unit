@@ -15,7 +15,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 ### BREAKING CHANGES
 
-- Update release scripts
+- Update workflow scripts [#104](https://github.com/LFDT-web3j/web3j-unit/pull/104)
 
 # [6.0.0](https://github.com/LFDT-web3j/web3j-unit/releases/tag/v6.0.0) (2026-06-30)
 
