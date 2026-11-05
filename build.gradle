@@ -27,6 +27,10 @@ ext {
     mockitoJunitVersion = '3.1.0'
 }
 
+// Rehearsals change only the publication coordinates, keeping the checkout's
+// Web3j dependencies. Live releases still select both with -Pversion.
+version = findProperty('rehearsalVersion') ?: version
+
 apply {
     [
         'jacoco',
@@ -47,6 +51,8 @@ apply {
         }
     }
 }
+
+apply from: 'gradle/release-validation.gradle'
 
 repositories {
     mavenCentral()
