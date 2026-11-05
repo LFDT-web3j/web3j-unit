@@ -3,9 +3,25 @@ name: Release
 on:
   push:
     branches: [ 'release/**' ]
+  pull_request:
+    branches: [ main ]
+    paths:
+      - '.github/workflows/build.yml'
+      - '.github/workflows/release.yml'
+      - '.github/RELEASE*.md'
+      - '**/*.gradle'
+      - 'gradle.properties'
+      - 'gradle/**'
+      - 'gradlew*'
+      - 'src/**'
+  workflow_dispatch:
 
 permissions:
   contents: read
+
+env:
+  # A rehearsal must not resolve core/evm at its synthetic publication version.
+  GRADLE_VERSION_PROPERTY: ${{ github.event_name == 'push' && 'version' || 'rehearsalVersion' }}
 
 defaults:
   run:
@@ -48,9 +64,6 @@ jobs:
   validate:
     needs: preflight
     uses: ./.github/workflows/build.yml
-    secrets:
-      REGISTRY_USERNAME: ${{ secrets.REGISTRY_USERNAME }}
-      REGISTRY_PASSWORD: ${{ secrets.REGISTRY_PASSWORD }}
 
   release:
     needs: validate
@@ -60,7 +73,7 @@ jobs:
       jars_artifact_id: ${{ steps.release_jars.outputs.artifact-id }}
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           ref: ${{ github.sha }}
           fetch-depth: 0
@@ -101,14 +114,14 @@ jobs:
       - name: Stage artifacts locally
         env:
           RELEASE_VERSION: ${{ steps.release_name.outputs.version }}
-        run: ./gradlew "-Pversion=$RELEASE_VERSION" publishMavenPublicationToLocalStagingRepository --no-build-cache --stacktrace
+        run: ./gradlew "-P${GRADLE_VERSION_PROPERTY}=$RELEASE_VERSION" publishMavenPublicationToLocalStagingRepository --no-build-cache --stacktrace
 
       - name: Verify staged release artifacts
         env:
           RELEASE_VERSION: ${{ steps.release_name.outputs.version }}
         run: |
           VERIFY_LOG="$(mktemp "$RUNNER_TEMP/release-verification.XXXXXX")"
-          ./gradlew "-Pversion=$RELEASE_VERSION" :verifyReleaseArtifacts --no-build-cache --stacktrace --console=plain | tee "$VERIFY_LOG"
+          ./gradlew "-P${GRADLE_VERSION_PROPERTY}=$RELEASE_VERSION" :verifyReleaseArtifacts --no-build-cache --stacktrace --console=plain | tee "$VERIFY_LOG"
           grep -E '^Verified [0-9]+ required files across [0-9]+ release modules\.$' "$VERIFY_LOG" >> "$GITHUB_STEP_SUMMARY"
 
       - name: Record staged artifact checksums and source
@@ -116,24 +129,33 @@ jobs:
           RELEASE_VERSION: ${{ steps.release_name.outputs.version }}
         run: |
           test -s release-expected-files.txt
-          
-          mapfile -t ARTIFACTS < release-expected-files.txt
-          
+
+          # Include Maven checksum sidecars as well as the five required files.
+          STAGED_DIR="build/staging-deploy/org/web3j/web3j-unit/$RELEASE_VERSION"
+          mapfile -d '' -t ARTIFACTS < <(find "$STAGED_DIR" -type f -print0 | LC_ALL=C sort -z)
+
           if (( ${#ARTIFACTS[@]} == 0 )); then
             echo "No release artifacts were staged." >&2
             exit 1
           fi
-          
+
           for ARTIFACT in "${ARTIFACTS[@]}"; do
             if [[ ! -s "$ARTIFACT" ]]; then
               echo "Missing or empty artifact: $ARTIFACT" >&2
               exit 1
             fi
           done
-          
+
+          while IFS= read -r EXPECTED || [[ -n "$EXPECTED" ]]; do
+            if ! printf '%s\n' "${ARTIFACTS[@]}" | grep -Fx -- "$EXPECTED" > /dev/null; then
+              echo "Required publication is absent from the staged file set: $EXPECTED" >&2
+              exit 1
+            fi
+          done < release-expected-files.txt
+
           sha256sum "${ARTIFACTS[@]}" \
             release-expected-files.txt > release-checksums.sha256
-          
+
           printf 'commit=%s\nversion=%s\nevent=%s\n' \
             "$GITHUB_SHA" \
             "$RELEASE_VERSION" \
@@ -167,7 +189,7 @@ jobs:
           }
           trap restore_file EXIT
           mv "$MISSING" "$TEST_DIR/withheld.module"
-          if ./gradlew "-Pversion=$RELEASE_VERSION" :verifyReleaseArtifacts --no-build-cache --console=plain > "$TEST_DIR/rejection.log" 2>&1; then
+          if ./gradlew "-P${GRADLE_VERSION_PROPERTY}=$RELEASE_VERSION" :verifyReleaseArtifacts --no-build-cache --console=plain > "$TEST_DIR/rejection.log" 2>&1; then
             cat "$TEST_DIR/rejection.log"
             echo "Verification accepted a missing publication." >&2
             exit 1
@@ -179,7 +201,7 @@ jobs:
             exit 1
           fi
           mv "$TEST_DIR/withheld.module" "$MISSING"
-          ./gradlew "-Pversion=$RELEASE_VERSION" :verifyReleaseArtifacts --no-build-cache --console=plain
+          ./gradlew "-P${GRADLE_VERSION_PROPERTY}=$RELEASE_VERSION" :verifyReleaseArtifacts --no-build-cache --console=plain
           cmp "$TEST_DIR/expected-files.txt" release-expected-files.txt
           sha256sum --check --strict release-checksums.sha256
           echo "Incomplete-artifact rejection passed; restored inventory and payload match the upload." >> "$GITHUB_STEP_SUMMARY"
@@ -197,44 +219,10 @@ jobs:
         run: |
           sha256sum --check --strict release-checksums.sha256
           # Deploy the recorded staging files; do not execute the publishing dependency again.
-          ./gradlew "-Pversion=$RELEASE_VERSION" jreleaserDeploy \
+          ./gradlew "-P${GRADLE_VERSION_PROPERTY}=$RELEASE_VERSION" jreleaserDeploy \
             -x publishMavenPublicationToLocalStagingRepository --no-build-cache --stacktrace
           # Signing may add .asc files, but must not change the recorded payload.
           sha256sum --check --strict release-checksums.sha256
-
-  javadocs-release:
-    needs: release
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v6
-        with:
-          ref: ${{ github.sha }}
-          persist-credentials: false
-      - name: Set up JDK 21
-        uses: actions/setup-java@v4
-        with:
-          distribution: zulu
-          java-version: 21
-      - name: Generate Javadocs
-        env:
-          RELEASE_VERSION: ${{ needs.release.outputs.version }}
-        run: ./gradlew "-Pversion=$RELEASE_VERSION" javadoc
-
-      - name: Save rehearsal Javadocs
-        if: github.event_name != 'push'
-        uses: actions/upload-artifact@v4
-        with:
-          name: release-javadocs-${{ needs.release.outputs.version }}
-          path: build/docs/javadoc/
-          if-no-files-found: error
-          retention-days: 14
-
-      - name: Publish Javadocs
-        if: github.event_name == 'push' && startsWith(github.ref, 'refs/heads/release/')
-        env:
-          GITHUB_TOKEN: ${{ secrets.JRELEASER_GITHUB_TOKEN }}
-          RELEASE_VERSION: ${{ needs.release.outputs.version }}
-        run: bash ./gradlew "-Pversion=$RELEASE_VERSION" core:gitPublishPush
 
   git-release:
     needs: release
@@ -277,7 +265,7 @@ jobs:
             echo "Version: $RELEASE_VERSION"
             echo "Commit: $GITHUB_SHA"
             if [[ "$GITHUB_EVENT_NAME" != push ]]; then
-              echo "Rehearsal only: Maven Central, GitHub release and Javadoc publication are disabled."
+              echo "Rehearsal only: Maven Central and GitHub release/tag publication are disabled."
             fi
           } >> "$GITHUB_STEP_SUMMARY"
       - name: Create GitHub release at the validated commit
