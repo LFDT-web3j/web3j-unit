@@ -3,11 +3,25 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
-# [6.1.0]() (Upcoming)
+# [6.1.1]() (Upcoming)
 
 ### Bug Fixes
 
 -
+
+### Features
+
+-
+
+### BREAKING CHANGES
+
+-
+
+# [6.1.0](https://github.com/LFDT-web3j/web3j-unit/releases/tag/v6.1.0) (2026-11-13)
+
+### Bug Fixes
+
+- Fix release verification and enable non-publishing rehearsals- #105 [#105](https://github.com/LFDT-web3j/web3j-unit/pull/105)
 
 ### Features
 
@@ -21,7 +35,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 ### Bug Fixes
 
--
+- 
 
 ### Features
 
