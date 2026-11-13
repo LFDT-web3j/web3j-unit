@@ -22,7 +22,7 @@ ext {
     mockitoKotlinVersion = '1.9.24'
     testContainersVersion = '1.21.4'
     besuVersion = '26.2.0'
-    besuNativeVersion = '1.4.2'
+    besuNativeVersion = '1.5.0'
     junitVersion = '6.0.2'
     mockitoJunitVersion = '3.1.0'
 }
@@ -91,7 +91,7 @@ dependencies {
 
     implementation "org.hyperledger.besu:secp256k1:$besuNativeVersion", withoutAbi
 
-    api "org.junit.platform:junit-platform-commons"
+    api "org.junit.platform:junit-platform-commons:$junitVersion"
 }
 
 test {
