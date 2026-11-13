@@ -91,7 +91,7 @@ dependencies {
 
     implementation "org.hyperledger.besu:secp256k1:$besuNativeVersion", withoutAbi
 
-    api "org.junit.platform:junit-platform-commons"
+    api "org.junit.platform:junit-platform-commons:$junitVersion"
 }
 
 test {
