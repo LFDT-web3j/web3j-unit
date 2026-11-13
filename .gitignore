@@ -80,3 +80,8 @@ gradle-app.setting
 bin
 
 !/libs/*
+
+# Local release rehearsal records
+/release-expected-files.txt
+/release-checksums.sha256
+/release-metadata.txt
